@@ -130,28 +130,29 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Unstructured data contains a lot of valuable knowledge. The problem with it is that it is hard to access. Since there's no structure, you can't just grab what you want and move on. One of the major forms of unstructured data is text. How do we find information from text? The answer is search.</p>
-<p>If you really think about it, the fact that you can search the entire web for information is amazing. There are hundreds of terabytes of raw text on the internet, yet somehow, by picking the right combination of keywords, you can find exactly what you're looking for. That is, if you're able to pick the right combination of keywords.</p>
-<p>A web search engine has a big advantage in relevancy. Namely, it can take advantage of user and website data. For the former, it has information on what people search, what they click on, how long until they search again, where they're from, what their interests are and so on. For the latter, it is possible to rank websites according to their linking structure, user engagement, loading speed and more.</p>
+<p>Unstructured data contains a lot of valuable knowledge. However, the problem with it is that it is hard to access. Since there's no structure, you can't just grab what you want and move on.</p>
+<p>One of the most important forms of unstructured data is text. Search engines are tools built to find information from text.</p>
+<p>A search engine that anyone's familiar with, is a web search engine such as Google. If you think about it, the fact that you can search the entire web for information is terrific. There are hundreds of terabytes of raw text on the internet, yet somehow, by picking the right combination of keywords, you can find exactly what you're looking for. That is, if you're able to choose them.</p>
+<p>Web search engines have a significant advantage in relevancy. Namely, it can take advantage of user and website data. For the former, it has information on what people search, what they click on, how long until they search again, where they're from, what their interests are, etc. For the latter, it is possible to rank websites according to their linking structure, user engagement, loading speed and more.</p>
 <p>All of this information can be cleverly used, to produce highly relevant search results, even while having a superficial understanding of the knowledge that's returned.</p>
-<p>As an example, Google knows that I often use programming related queries. So do many other people that also like to click on Stackoverflow (programming forum) links. Say there is evidence that 90% of people that are similar to myself, click on a particular Stackoverflow link for a certain search term. It makes sense to rank this result high, even if there is no <em>understanding</em> of relevancy on a content level. Some keywords will match, and that's great, but that's far from the reason the result was given a high ranking.</p>
-<p>Most companies and people don't have the luxuries of massive amounts of user data. And indeed, not all search problems can be solved this way. What if you are searching your own private files? There is no obvious ranking between the files. You can't say that all Word documents are superior to Powerpoint slides. Nor can you infer rankings from the searches done by other users. You'd hope you're the only person searching your files.</p>
-<p>What can be done and what is being done about this?</p>
+<p>As an example, Google knows that I often use programming related queries. So do many other people that also like to click on <a href="https://stackoverflow.com/">Stackoverflow</a> links. Say there is evidence that 90% of people that are similar to myself, click on a particular Stackoverflow link for a specific search term. It makes sense to rank this result high, even if there is no <em>understanding</em> of relevancy on a content level. Some keywords will match, and that's great, but that's far from the reason the result was given a high ranking.</p>
+<p>Using user data is just one of the many ways a search engine can provide relevant results. Most companies and people don't have such luxuries. And indeed, not all search problems can be solved this way. What if you are searching your own private files? There is no apparent ranking between the files. You can't say that all Word documents are superior to Powerpoint slides. Nor can you infer rankings from the searches done by other users. You'd hope you're the only person searching your files.</p>
+<p>There is no silver bullet for the problem. The only solution is building an exceptional search engine that is able to understand what we want to find. In the following 5 levels of search, we'll build the engine from scratch and see what marvels await us in the future of search.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Levels-of-search">Levels of search<a class="anchor-link" href="#Levels-of-search"> </a></h2><p>Search is an important enough field to have various solutions and software offerings for many different domains. To cut through the noise, I will be focusing on the fundamentals of text based search. We'll go from level 1 to 5, or from the past to the future of search. I will give some examples in code, but you can comfortably skip over them and still build an intuitive understanding about the topic.</p>
+<h2 id="Levels-of-search">Levels of search<a class="anchor-link" href="#Levels-of-search"> </a></h2><p>Search is an significant enough field to have various solutions and software offerings for many different domains. To cut through the noise, I will be focusing on the fundamentals of text-based search. Each level will show the code behind the implementation. You may comfortably skip over the code and still build an intuitive understanding about the topic.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Level-1---Keyword-matching">Level 1 - Keyword matching<a class="anchor-link" href="#Level-1---Keyword-matching"> </a></h3><p>Starting from the very basics, we can search using keywords. It's very easy to come up with an algorithm that does just that. Furthermore, I have found that many people intuitively think about search this way, so it is quite simple to get across.</p>
-<p>The idea is to split every document into words, count occurrances and save the processed version, thus "indexing" it.</p>
+<h3 id="Level-1---Keyword-matching">Level 1 - Keyword matching<a class="anchor-link" href="#Level-1---Keyword-matching"> </a></h3><p>Starting from the very basics, we can search using keywords. It's very easy to come up with an algorithm that does just that.</p>
+<p>The idea is to split every document into words, count occurrences and save the processed version, thus "indexing" it.</p>
 <p>Once we query for a document, we'll do the same processing on the query and count exact keyword matches, thus "scoring" documents.</p>
 
 </div>
@@ -347,7 +348,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After implementing a nice wrapper, we can start searching. Let's try to search for <strong>cats</strong>.</p>
+<p>After implementing a nice wrapper, we can start searching. Let's try to search for <code>cats</code>.</p>
 
 </div>
 </div>
@@ -389,7 +390,7 @@ silly dog videos               0.0000
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Great! The two documents that mention cats are ranked at the top, while <code>dog videos</code> gets a score of <code>0.0</code>.</p>
 <p>Search solved? Unfortunately not, far from it. If you're paying attention, I'm sure you have noticed a big red flag. The first document has a score that's <code>3x</code> higher than the second result. All because it has "stuffed" the keyword <code>cats</code>.</p>
-<p>This brings us back to the early days of search engines, where people could rank pages high just by "stuffing" their content with repeated keywords. One such strategy involved writing the excess keywords in white font on a white background so just the indexing robots could read it. Clearly, this is not a great solution.</p>
+<p>This brings us back to the early days of search engines, where people could rank pages high just by "stuffing" their content with repeated keywords. One such strategy involved writing the excess keywords in white font on a white background so only the indexing robots could read it. Clearly, this is not a great solution.</p>
 <p>Let's look at another example to see what else is wrong with this approach.</p>
 
 </div>
@@ -430,12 +431,12 @@ Cats, cats, cats!              0.0000
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As you may have expected, <code>silly dog videos</code> and <code>cat videos</code> get exactly the same score. This is because our simple indexing system can't tell that singular and plural forms of words are basically the same thing. The only keyword that matches is <code>videos</code>.</p>
-<p>All in all, these two red flags make this approach uninteresting. However, we did learn about two important search concepts: indexing and scoring.</p>
+<p>As you may have expected, <code>silly dog videos</code> and <code>cat videos</code> get precisely the same score. This is because our simple indexing system can't understand that singular and plural forms of words are basically the same thing. The only keyword that matches is <code>videos</code>.</p>
+<p>All in all, these two red flags make this approach uninteresting. However, we did learn about two essential search concepts: indexing and scoring.</p>
 <p><strong>Indexing</strong> is the process of processing and saving documents to make them easily scorable/retrievable for search queries.</p>
 <p><strong>Scoring</strong> is the process of giving documents a score based on the query and information in the index.</p>
-<p>These are the two crucial pieces that make every search engine work. While it is possible to score documents without indexing, it makes searching too slow for large amounts of documents and does not support some more advanced scoring algorithms.</p>
-<p>As we climb towards higher levels, it is important to remember that on a fundamental level, indexing and scoring is all a search engine is doing.</p>
+<p>These are the two crucial pieces that make every search engine work. While it is possible to score documents without indexing, it makes searching too slow for large amounts of documents and does not support some of the advanced scoring algorithms.</p>
+<p>As we climb towards higher levels, it is essential to remember that on a fundamental level, indexing and scoring is all a search engine is doing.</p>
 
 </div>
 </div>
@@ -448,14 +449,14 @@ Cats, cats, cats!              0.0000
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Using the last approach, we found two big problems:</p>
+<p>Level 1 is a dumb search engine with two big problems:</p>
 <ol>
 <li>ranking by keyword count, thus enabling keyword stuffing</li>
 <li>scoring documents only by exact keywords, therefore disregarding plural forms</li>
 </ol>
 <p>To remedy problem 1, we will turn the words to tokens in a way that captures singular, plural forms and more. Allowing for usage on languages that don't contain any spaces, such as Chinese.</p>
-<p>Problem 2 will be fixed by using the BM25 scoring algorithm, which is one of the most popular algorithms in modern open source search engines such as <a href="https://github.com/elastic/elasticsearch">Elasticsearch</a> and <a href="https://lucene.apache.org/solr/">Solr</a>.</p>
-<p>Last time, our tokens were words and the scoring was counting the number of words. This time, our tokens will be parts of words and our scoring function will severely penalize keyword stuffing.</p>
+<p>Problem 2 can be fixed by using the <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25 scoring algorithm</a>, which is one of the most popular algorithms in modern open-source search engines such as <a href="https://github.com/elastic/elasticsearch">Elasticsearch</a> and <a href="https://lucene.apache.org/solr/">Solr</a>.</p>
+<p>In Level 1 of search, those tokens were words, and the scoring was counting the number of words. In Level 2 of search, the tokens will be parts of words, and our scoring function will severely penalise keyword stuffing.</p>
 <p>Our resulting approach will be comparable to most search engines that are widely used today (with a few tweaks here and there).</p>
 
 </div>
@@ -463,16 +464,16 @@ Cats, cats, cats!              0.0000
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Token-indexing">Token indexing<a class="anchor-link" href="#Token-indexing"> </a></h4><p>We will clean text and split it to words, same as before. As an additional step, we'll make n-grams from words. As an example, an n-gram of size 3 (trigram) will split a word to sequences of 3 characters.</p>
-<p>This idea is best conveyed through an example. The word "machine" would result in 5 different tokens: mac, ach, chi, hin, ine. Using this approach, "cats" would become cat and ats.</p>
-<p>The trick is to apply the same tokenization to queries, meaning that similar looking words will be ranked higher and exact matches will still be ranked highest.</p>
+<h4 id="Token-indexing">Token indexing<a class="anchor-link" href="#Token-indexing"> </a></h4><p>We will clean text and split it to words, same as before. As an additional step, we'll make <a href="https://en.wikipedia.org/wiki/N-gram">n-grams</a> from words. As an example, an n-gram of size 3 (trigram) will split a word to sequences of 3 characters.</p>
+<p>This idea is best conveyed through an example. The word <code>machine</code> would result in 5 different tokens: <code>mac</code>, <code>ach</code>, <code>chi</code>, <code>hin</code>, <code>ine</code>. Using this approach, <code>cats</code> would become <code>cat</code> and <code>ats</code>.</p>
+<p>The trick is to apply the same tokenisation to queries, meaning that similar-looking words will be scored higher and exact matches will still be ranked highest.</p>
 <p>Not only will this help with singular and plural forms, but also with compound words that are very common in some languages like German and Estonian.
-As an example, <code>face mask</code> translated to Estonian is <code>näomask</code>, where "näo" is a grammar case of face and "mask" is mask.</p>
-<p>You can hopefully see that if I were to search "mask" in Estonian using our <code>Level 1</code> approach, I wouldn't find any results about face masks. I would, however, get a match if I transformed both the document <code>näomask</code> and the query <code>mask</code> into trigrams.</p>
-<p>näomask =&gt; näo, äom, oma, mas, ask</p>
-<p>mask =&gt; mas, ask</p>
+As an example, <code>face mask</code> translated to Estonian is <code>näomask</code>, where <code>näo</code> is a grammar case of face and <code>mask</code> is mask.</p>
+<p>You can hopefully see that if I were to search <code>mask</code> in Estonian using our Level 1 approach, I wouldn't find any results about face masks. I would, however, get a match if I transformed both the document <code>näomask</code> and the query <code>mask</code> into trigrams.</p>
+<p><code>näomask =&gt; näo, äom, oma, mas, ask</code></p>
+<p><code>mask =&gt; mas, ask</code></p>
 <p>This approach would give two token matches to my query.</p>
-<p>Let's write quick ngram tokenization and indexing functions that achieve just that.</p>
+<p>Let's write quick n-gram tokenisation and indexing functions that achieve just that.</p>
 
 </div>
 </div>
@@ -576,7 +577,7 @@ As an example, <code>face mask</code> translated to Estonian is <code>näomask</
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Almost there! We've solved one problem. Besides tokenizing keywords, we added some extra information to the index. It will make sense why, once we get an overview of the ranking algorithm.</p>
+<p>Almost there! We've solved one problem. Besides tokenising keywords, we added some extra information to the index. It will make sense why, once we get an overview of the ranking algorithm.</p>
 
 </div>
 </div>
@@ -601,13 +602,13 @@ As an example, <code>face mask</code> translated to Estonian is <code>näomask</
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="BM25-ranking">BM25 ranking<a class="anchor-link" href="#BM25-ranking"> </a></h4><p>I won't go too deep into the particular algorithm as it is not very important. It is simply necessary to understand the intuition behind the algorithm and that there are methods out there that do a good job at finding relevant information according to our query terms.</p>
+<h4 id="BM25-ranking">BM25 ranking<a class="anchor-link" href="#BM25-ranking"> </a></h4><p>Understanding every small detail of the ranking algorithm is not very important. It is simply necessary to understand the intuition behind the algorithm and that there are methods out there that do a good job at finding relevant information according to our query terms.</p>
 <p>If you don't want to focus on the math (which I completely understand), here's what you need to know. Our algorithm will value each token differently, based on how common it is. Additionally, repeated tokens become less important, the more of them there are.</p>
 <p>If you are interested in the specifics, here is an adapted summary from <a href="https://en.wikipedia.org/wiki/Okapi_BM25">wikipedia</a>:</p>
 $$
 \text{score}(D,Q) = \sum_{i=1}^{n} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}
-$$<p>In the BM25 algorithm, $f(q_i, D)$ is the frequency of tokens in a document, which rewards token repetitions. $|D|$ is the number of tokens in a document. $avgdl$ is is the average length of all documents. $k_1$ and $b$ are tweakable parameters which penalize or reward token frequencies.
-Thus, the numerator in the fraction boosts the document score for repeated tokens. And the denominator penalizes the document score for repeated tokens, scaling by document length. If the document is particularly long, it is penalized more as it has more "opportunities" for matching tokens.</p>
+$$<p>In the BM25 algorithm, $f(q_i, D)$ is the frequency of tokens in a document, which rewards token repetitions. $|D|$ is the number of tokens in a document. $avgdl$ is the average length of all documents. $k_1$ and $b$ are tweakable parameters which penalise or reward token frequencies.
+Thus, the numerator in the fraction boosts the document score for repeated tokens. And the denominator penalises the document score for repeated tokens, scaling by document length. If the document is particularly long, it is penalised more as it has more "opportunities" for matching tokens.</p>
 <p>$IDF(q_i)$ calculates inverse document frequency of the token and is computed as:</p>
 $$
 \text{IDF}(q_i) = \ln (\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}+1)
@@ -663,7 +664,7 @@ $$<p>Here, $N$ is the total number of documents and $n(q_i)$ is the number of do
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Ranking is not very different from our last ranking function. Instead of keywords, we use tokens. We no longer count occurances, but calculate the score with BM25.</p>
+<p>The ranking of Level 2 is not very different from Level 1. Instead of keywords, we use tokens. We no longer count occurences, but calculate the score with BM25.</p>
 
 </div>
 </div>
@@ -746,7 +747,7 @@ viral triple rainbow clip      0.0000
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By being more specific, we can see that we finally beat keyword stuffing. Using the level 1 ranking with our new tokenization would still rank the stuffed document higher. This is because <code>cat vid</code> only matches two tokens from "funny videos about cats", but would match three from "cats cats cats" (remember the trigrams).</p>
+<p>By being more specific, we can see that we finally beat keyword stuffing. Using the level 1 ranking with our new tokenisation would still rank the stuffed document higher. This is because <code>cat vid</code> only matches two tokens from <code>funny videos about cats</code>, but would match three from <code>cats cats cats</code> (remember the trigrams).</p>
 <p>BM25 is "smart" enough to weigh the <code>cat</code> token as lower value, since it is more common.</p>
 
 </div>
@@ -830,7 +831,7 @@ viral triple rainbow clip      0.0000
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Uh-oh... What happened here? Well, since we use trigrams, cats and hats are equivalent when searching <code>cat</code> vs <code>hats</code>. The former matches the <code>cat</code> trigram, while the latter matches the <code>ats</code> trigram.</p>
-<p>This can be fixed by playing around with n-gram lengths or using different tokenization altogether. Additionally, since our index is very small, we don't have anything about "hats". We got a false positive, and it's not the end of the world.</p>
+<p>This can be fixed by playing around with n-gram lengths or using different tokenisation altogether. Additionally, since our index is tiny, we don't have anything about <code>hats</code>. We got a false positive, and it's not the end of the world.</p>
 
 </div>
 </div>
@@ -912,13 +913,13 @@ silly dog videos               0.0000
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Remember the example with "näomask" (face mask)? Well, turns out token matching for compound words is a double edged sword. We are matching the token <code>bow</code> in <code>rainbow</code> and this is giving us another false positive.</p>
-<p>In fact, scoring is a very big issue in general. It is not too hard to have reasonable ranking between results. What's much harder is figuring out whether there are any relevant results at all. You can't set a hard limit that says "anything below a score of 1 or 2 is not relevant". In practice, the scores can vary a lot from query to query, and from my own research and testing, there is no good way to tell.</p>
+<p>Remember the example with "näomask" (face mask)? Well, it turns out token matching for compound words is a double-edged sword. We are matching the token <code>bow</code> in <code>rainbow</code>, and this is giving us another false positive.</p>
+<p>In fact, scoring is a huge issue in general. It is not too hard to have a reasonably good ranking between results. What's much harder is figuring out whether there are any relevant results at all. You can't set a hard limit that says "anything below a score of 1 or 2 is not relevant". In practice, the scores can vary a lot from query to query, and from my own research and testing, there is no right way to tell.</p>
 <p>If you try to think like an engineer, I'm sure you can figure out plenty of fixes to the problems. For example, to get around the <code>clip</code> vs <code>video</code> problem, you could index them as synonyms. Most modern search engines support this feature, and it is not too hard to implement in our small example either.</p>
-<p>And truth be told, I could play around with some parameters and index more documents to represent a real world scenario better.</p>
-<p>Here you can see, that achieving good search performance in a particular domain can become a significant tweaking/engineering task - and there is incredible work being done in this area!</p>
+<p>And truth be told, I could play around with some parameters and index more documents to represent a real-world scenario better.</p>
+<p>Here you can see that achieving good search performance in a particular domain can become a significant tweaking/engineering task - and there is incredible work being done in this area!</p>
 <p>Even if we manage to hack our solution to be "perfect", there are no guarantees that it will be perfect tomorrow when the index is updated. And indeed, there is no guarantee of perfection at all since you can't possibly cover every single query. The whole point of a search engine is to search for whatever you want to find.</p>
-<p>All of our issues narrow in on a fundamental problem: there is no <em>understanding</em> in our search engine.</p>
+<p>All of the issues arise from a fundamental problem: there is no <em>understanding</em> in our search engine.</p>
 
 </div>
 </div>
@@ -932,7 +933,7 @@ silly dog videos               0.0000
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How do we even begin introducing understanding to our search engine? If you've been listening to the buzz, you may think of AI.</p>
-<p>And that is indeed the correct answer. However, it is misleading and not helpful to label things as AI and move on. There are many different approaches in AI that can be applied to various problems. It is useful to build an intuition about them, so you could understand their capabilities and limitations.</p>
+<p>And that is indeed the correct answer. However, it is misleading and not helpful to label things as AI and move on. There are many different approaches in AI that can be applied to various problems. It is useful to build an intuition about them so that, so you could understand their capabilities and limitations.</p>
 
 </div>
 </div>
@@ -940,11 +941,11 @@ silly dog videos               0.0000
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Understanding-and-indexing-keywords">Understanding and indexing keywords<a class="anchor-link" href="#Understanding-and-indexing-keywords"> </a></h4><p>The key to making a computer understand words is to turn the words into an appropriate form that makes them easy to manipulate through calculations. You may have guessed that this is numeric form.</p>
-<p>The basic idea behind achieving this is to let the computer learn the "numbers" for each word. The way this can be done is quite clever. One approach is to feed it a bunch of text, say the entirety of wikipedia. You can instruct the algorithm to predict the next word, given the previous words it has seen. In order to do this task well, it must learn about relationships between words.</p>
+<p>The basic idea behind achieving this is to let the computer learn the "numbers" for each word. The way this can be done is quite clever. One approach is to feed it a bunch of text, say the entirety of Wikipedia. You can instruct the algorithm to predict the next word, given the previous words it has seen. In order to do this task well, it must learn about relationships between words.</p>
 <p>For example, if I asked you to complete the sentence "He was walking his ___", I'm sure you could come up with a reasonable answer.
-The only way the computer can do it well, is by learning to represent words in a coherent way.</p>
-<p>These numeric word representations are called word vectors or embeddings. I am not going to show you how you can train these vectors from scratch, but I may write another post about it in the future. If you're interested, you can search for "language modelling" and "learning word embeddings".</p>
-<p>For now, you can take my word that it is possible. Let's take some pretrained vectors from <a href="https://fasttext.cc">fasttext</a>. Visualising them shows some amazing results.</p>
+The only way the computer can do it well, is by learning to represent words coherently.</p>
+<p>These numeric word representations are called word vectors or embeddings. At this time, I am not going to show how to train these vectors from scratch, but I may write another post about it in the future. If you're interested in knowing more now, go search for "language modelling" and "learning word embeddings".</p>
+<p>For now, you can take my word that it is possible. Let's take some pre-trained vectors from <a href="https://fasttext.cc">fasttext</a>. Visualising them shows some fantastic results.</p>
 
 </div>
 </div>
@@ -978,7 +979,7 @@ The only way the computer can do it well, is by learning to represent words in a
 <p>Here, we've done principal component analysis (PCA) to turn our word vectors from 300 dimensions to 2. This means that if our previous vectors consisted of 300 numbers each, now they consist of just 2. We obviously lose a lot of information in the process, but we can at least visualise them in a 2D plot.</p>
 <p>You can see that related words are close to each other, while unrelated words are farther away. Due to PCA, the distances aren't very accurately represented, but hopefully you can see that there is a level of understanding behind the vectors.</p>
 <p>To further demonstrate this, I'll show a popular example of doing arithmetic with words.</p>
-<p>What is "king - man + woman"?</p>
+<p>What is <code>king - man + woman</code>?</p>
 
 </div>
 </div>
@@ -1037,8 +1038,8 @@ The only way the computer can do it well, is by learning to represent words in a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Using cosine similarity to compare vectors, we get a result of roughly <code>0.65</code>. As cosine similarity ranges from -1 to 1, this means the vectors are very similar.</p>
-<p>It turns out that <code>king</code> - <code>man</code> + <code>woman</code> is roughly equal to queen. Very cool!</p>
+<p>Using <a href="https://en.wikipedia.org/wiki/Cosine_similarity">cosine similarity</a> to compare vectors, we get a result of roughly <code>0.65</code>. As cosine similarity ranges from -1 to 1, this means the vectors are very similar.</p>
+<p>It turns out that <code>king - man + woman</code> is roughly equal to queen. Very cool!</p>
 <p>To verify this and see if this approach could help us with cats, dogs, animals and everything else we've been trying we can do more comparisons.</p>
 
 </div>
@@ -1225,7 +1226,7 @@ The only way the computer can do it well, is by learning to represent words in a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As a final test, we can see that is also handles slang. Looks promising. Let's write an indexing function for keyword vectors.</p>
+<p>As a final test, we can see that it also handles slang. Looks promising. Let's write an indexing function for keyword vectors.</p>
 
 </div>
 </div>
@@ -1267,7 +1268,7 @@ The only way the computer can do it well, is by learning to represent words in a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>All that we have done for indexing, is saving the keyword vectors alongside their counts.</p>
+<p>All that we have done for indexing is saving the keyword vectors alongside their counts.</p>
 
 </div>
 </div>
@@ -1337,7 +1338,7 @@ The only way the computer can do it well, is by learning to represent words in a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>For the ranking, we weight repeated keywords as exponentially less important. We use cosine similarity between each of the query and document keywords and sum up the score that's normalized over query and document length.</p>
+<p>For the ranking, we weigh repeated keywords as exponentially less important. We use cosine similarity between each of the query and document keywords and sum up the score that's normalised over query and document length.</p>
 
 </div>
 </div>
@@ -1419,7 +1420,7 @@ viral triple rainbow clip      0.1334
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since we are not relying on n-grams anymore, we don't make a plunder here. Notice that the top scores are considerably lower than for the last search.</p>
+<p>Since we are not relying on n-grams anymore, we don't make a blunder here. Notice that the top scores are considerably lower than for the last search.</p>
 
 </div>
 </div>
@@ -1520,8 +1521,8 @@ viral triple rainbow clip      0.1464
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here's our first problem. As our similarity matching is purely on a word level, we get an unrelated result as the top result. <code>videos</code> matches well with <code>footage</code> and <code>animals</code> matches perfectly with <code>animals</code>.</p>
-<p>Due to word level limitations, we can't tell that <code>toy animals</code> and <code>animals</code> are very different.</p>
+<p>Here's our first problem. As our similarity matching is purely on a word-level, we get an irrelevant result as the top result. <code>videos</code> matches well with <code>footage</code> and <code>animals</code> matches perfectly with <code>animals</code>.</p>
+<p>Due to word-level limitations, we can't tell that <code>toy animals</code> and <code>animals</code> are very different.</p>
 
 </div>
 </div>
@@ -1638,10 +1639,10 @@ viral triple rainbow clip      0.2238
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It seems that <code>cat</code> is more similar to <code>cats</code> than to <code>dog</code>. That's good. The only reason for the worse score can be due to the other words in the documents.</p>
 <p>In specific, <code>funny</code> and <code>about</code> are dragging the average score down more than <code>silly</code>.</p>
-<p>What now? We've managed to introduce understanding into our search engine. We can now get away without any n-gram tokenization and get synonym support out of the box. Additionally, we have a better way of detecting whether there are any relevant results. We could say that anything below the score of <code>0.15-0.20</code> is not relevant. Whereas with the previous level, the scoring was much more arbitrary.</p>
-<p>There's another problem which hasn't been mentioned, and that's scale. The current implementation needs to save word vectors for every keyword. For ranking, we need to compare every single query keyword with each document keyword, for every single document. Sure, there are some efficiency tricks we can do here and there, but our engine still relies entirely on vector comparisons. That's bad for scale, both in terms of space and time.</p>
+<p>What now? We've managed to introduce understanding into our search engine. We can now get away without any n-gram tokenisation and get synonym support out of the box. Additionally, we have a better way of detecting whether there are any relevant results. We could say that anything below the score of <code>0.15-0.20</code> is not relevant. Whereas with the previous level, the scoring was much more arbitrary.</p>
+<p>There's another problem which hasn't been mentioned, and that's scale. The current implementation needs to save word vectors for every keyword. For ranking, we need to compare every single query keyword with each document keyword for every available document. Sure, there are some efficiency tricks we can do here and there, but our engine still relies entirely on vector comparisons. That's bad for scale, both in terms of space and time.</p>
 <p>Our level 2 token matching engine was much more efficient (and it can still be improved). We could quickly access the relevant tokens and have a lot of pre-processed information about every document. Here, for level 3, we depend on comparing a lot of different vectors, since we can't rely on exact matches.</p>
-<p>While we improved on relevancy through understanding, we took a big hit on scalability. This is a no go. Search becomes more important the more documents you have. Speaking of more documents, I'm fairly confident that the BM25 ranking algorithm would perform better in most real world scenarios. Large amounts of text introduce a lot of "noise", which BM25 is built to handle.</p>
+<p>While we improved on relevancy through understanding, we took a big hit on scalability. This is a no go. Search becomes more critical the more documents you have. Speaking of more documents, I'm reasonably confident that the BM25 ranking algorithm would perform better in most real-world scenarios. Large amounts of text introduce a lot of "noise", which BM25 is built to handle.</p>
 <p>It's possible to merge the two approaches, but it's time to climb a level higher.</p>
 
 </div>
@@ -1655,9 +1656,9 @@ viral triple rainbow clip      0.2238
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With this approach, we are trying to solve the limitations of word only semantics and build a more scalable approach. It's time to ditch word vectors and use approaches that can capture accurate vectors about sentences, paragraphs and entire documents. Not all AI is created equal.</p>
-<p>Say we could produce a single vector for our query and every document. Then, we could compare our query with every single document just once, giving us linear time and space complexities. Great! And if that's not good enough, there are appropriate vector search libraries out there, such as <a href="https://github.com/spotify/annoy">ANNOY</a>. If a single vector is enough to capture the meaning/information of queries and documents, then we're well off!</p>
-<p>Perhaps surprisingly, the implementation for Level 4 is as easy as Level 1, that is, if you don't need to implement the language model from scratch. Luckily, for the past few years, there has been a huge amount of research in this area (and it is still ongoing).</p>
+<p>With Level 4, we are trying to solve the limitations of word only semantics and build a more scalable system. It's time to ditch word vectors and use techniques that can capture accurate vectors about sentences, paragraphs and entire documents. Not all AI is created equal.</p>
+<p>Say we could produce a single vector for our query and every document. Then, we could compare our query with every available document just once, giving us linear time and space complexities. Great! And if that's not good enough, there are appropriate vector search libraries out there, such as <a href="https://github.com/spotify/annoy">ANNOY</a>. If a single vector is enough to capture the meaning/information of queries and documents, then we're well off!</p>
+<p>Perhaps surprisingly, the implementation for Level 4 is as easy as Level 1, that is, if you don't need to implement the language model from scratch. Luckily, for the past few years, there has been a considerable amount of research in this area (and it is still ongoing).</p>
 <p>One of the most important models in this area is <a href="https://github.com/google-research/bert">BERT</a>, which was created and released in 2018 by Google. And since October 2020, it is used for all English queries in Google search. What makes it different from our word vector approach is that it takes context into account.</p>
 <p>Consider two sentences:</p>
 <ol>
@@ -1666,11 +1667,11 @@ viral triple rainbow clip      0.2238
 </ol>
 <p>Clearly the word <code>bank</code> has two different meanings in the sentences. If you only have a single vector per word, you can't possibly represent two different meanings accurately.</p>
 <p>Additionally, BERT can consider meaning in both directions, which is why it is called a bidirectional model. In plain English, this means that BERT looks at the entire sentence before making the final prediction. Remember my proposed approach for learning word vectors? It involved trying to predict the next word given a sequence of words.</p>
-<p>BERT is trained differently, it is asked to predict words within sentences, such as:</p>
+<p>BERT is trained differently; it is asked to predict words within sentences, such as:</p>
 <p>"The man went to the ___. He bought a ___ of milk."</p>
-<p>It does some other tricks, but that's basically it. Thanks to the training and its architecture, it is able to represent entire sentences and documents as vectors.</p>
-<p>Additionally, it is relatively quick and inexpensive to finetune, which means adapting it to your specific domain. This has created an explosion of models and libraries built around BERT. While I won't be showing how to train a similar model from scratch, nor how to finetune BERT (though both would be fun and blog worthy), I will show how easy existing models are to use.</p>
-<p>It's time to build our Level 4 indexing and ranking.</p>
+<p>It does some other tricks, but that's basically it. Thanks to the training and its architecture, it can represent entire sentences and documents as vectors.</p>
+<p>Additionally, it is relatively quick and inexpensive to finetune, which means adapting it to your specific domain. This has created an explosion of models and libraries built around BERT. While I won't be showing how to train a similar model from scratch, nor how to finetune BERT (though both would be fun and blog-worthy), we'll cover how easy existing models are to use.</p>
+<p>It's time to build our Level 4 search engine.</p>
 
 </div>
 </div>
@@ -1724,8 +1725,8 @@ viral triple rainbow clip      0.2238
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The only new thing here is our language model. We use an awesome library called <a href="https://github.com/UKPLab/sentence-transformers">Sentence Transformers</a>, which is great at producing sentence vectors from transformer based language models, such as BERT. The specific model we use does not matter too much, but every model excels in its own domain.</p>
-<p>It depends on the type of data the model was trained/finetuned on. The model used is a modified and finetuned variant of BERT that happens to be suitable for our queries and documents.</p>
+<p>The only new thing here is our language model. We use an incredible library called <a href="https://github.com/UKPLab/sentence-transformers">Sentence Transformers</a>, which is excellent at producing sentence vectors from transformer-based language models, such as BERT. The specific model we use does not matter too much, but every model excels in its own domain.</p>
+<p>It depends on the type of data the model was trained/fine-tuned on. The model used is a modified and fine-tuned variant of BERT that happens to be suitable for our queries and documents.</p>
 <p>For an optimal solution, you'd need to finetune a model on your own data.</p>
 
 </div>
@@ -1974,11 +1975,12 @@ viral triple rainbow clip      0.3138
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If you have noticed the trend, then with each approach we have become more and more general. We started out with individual keywords that couldn't match singular, plural forms and compound words. We moved on to token matching that could do the aforementioned. Token matching was limited in understanding similar words and made some errors due to, well, the nature of token matching.</p>
+<p>If you have noticed the trend, then with each level we have become more and more general. We started with individual keywords that couldn't match singular, plural forms and compound words. We moved on to token matching that could do the aforementioned. Token matching was limited in understanding similar words and made some errors due to, well, the nature of token matching.</p>
 <p>We introduced first traces of intelligence with word vectors that captured some meaning. Where we fell short was the relationships <em>between</em> words. Logically enough, we upgraded and captured the meanings of word relationships. Our shortage here was a lack of knowledge about other documents and a "one approach that fits all" solution. While we improved the results, we definitely didn't solve search.</p>
 <p>Where to from here? What we need is more intelligence, and specifically, broader intelligence.</p>
-<p>Think about why you or anyone else searches. It is to find information. Doesn't it make sense to find exactly what you're looking for, instead of finding traces that you need to put together manually? Say you're trying to find how many different animal species there are or how many customer complaints your company has received in the last quarter. You'll be successful only if that data is already analyzed. That is, someone has written a paper on the topic or put together a formal report. In many cases, the data is already there! You just need the right intelligence to analyze it.</p>
-<p>For the time being, I don't have the solution. But hopefully you can share my vision and see that this is the only logical direction for search to head.</p>
+<p>Think about why you or anyone else searches. It is to find information. Doesn't it make sense to find exactly what you're looking for, instead of finding traces that you need to put together manually? Say you're trying to find how many different animal species there are or how many customer complaints your company has received in the last quarter. You'll be successful only if that data is already analysed. That is, someone has written a paper on the topic or put together a formal report. In many cases, the information is already there! You just need the right intelligence to analyse it.</p>
+<p>From here on, your imagination is the limit. The world is full of unstructured data like text. What gems may we find and what problems could we solve, given an intelligence that analyses the world's information and connects the right bits?</p>
+<p>For the time being, there isn't a solution. However, the next level of search is our mission at <a href="https://kiri.ai/">Kiri</a>. We'll be sharing more of our learnings and technology in the near future.</p>
 
 </div>
 </div>
