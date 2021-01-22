@@ -33,9 +33,9 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     git config --global user.email "$USER_EMAIL"
     ssh-keyscan github.com >> /root/.ssh/known_hosts
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
-    echo "${INPUT_SSH_DEPLOY_KEY}" > _mykey
-    chmod 400 _mykey
-    ssh-add _mykey
+    echo "${INPUT_SSH_DEPLOY_KEY}" > /root/.ssh/id_rsa
+    chmod 600 /root/.ssh/id_rsa
+    chmod 755 /root/.ssh
 
     ssh -vT git@github.com
 
