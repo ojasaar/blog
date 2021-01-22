@@ -31,11 +31,13 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     # Setup Git credentials if we are planning to change the data in the repo
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
-    chmod 400 /root/.ssh/id_rsa
-    echo "${INPUT_SSH_DEPLOY_KEY}" > /root/.ssh/id_rsa
     ssh-keyscan github.com >> /root/.ssh/known_hosts
-
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
+    echo "${INPUT_SSH_DEPLOY_KEY}" > _mykey
+    chmod 400 _mykey
+    ssh-add _mykey
+
+    ssh -vT git@github.com
 
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
