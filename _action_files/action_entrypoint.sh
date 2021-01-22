@@ -22,11 +22,7 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     fi
 
     # Get user's email from commit history
-    if [[ "$GITHUB_EVENT_NAME" == "push" ]];then
-        USER_EMAIL=$(jq '.commits | .[0] | .author.email' < "$GITHUB_EVENT_PATH")
-    else
-        USER_EMAIL="actions@github.com"
-    fi
+    USER_EMAIL="actions@github.com"
 
     # Setup Git credentials if we are planning to change the data in the repo
     git config --global user.name "$GITHUB_ACTOR"
