@@ -29,7 +29,7 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     git config --global user.email "$USER_EMAIL"
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
 
-    ssh-add - <<< "${{ INPUT_SSH_DEPLOY_KEY }}"
+    ssh-add - <<< "$INPUT_SSH_DEPLOY_KEY"
 
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
