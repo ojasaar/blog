@@ -28,6 +28,7 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
     ssh-add - <<< "$INPUT_SSH_DEPLOY_KEY"
+    echo $INPUT_SSH_DEPLOY_KEY
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
 
 
