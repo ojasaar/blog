@@ -22,14 +22,13 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     fi
 
     # Get user's email from commit history
-    USER_EMAIL="actions@github.com"
+    USER_EMAIL="ojasaarkristo@gmail.com"
 
     # Setup Git credentials if we are planning to change the data in the repo
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
     echo "${INPUT_SSH_DEPLOY_KEY}" > _mykey
-    echo "${GITHUB_REPOSITORY}"
     chmod 400 _mykey
     ssh-add _mykey
 
