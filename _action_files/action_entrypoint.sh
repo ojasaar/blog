@@ -22,23 +22,25 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     fi
 
     # Get user's email from commit history
-    USER_EMAIL="ojasaarkristo@gmail.com"
+    if [[ "$GITHUB_EVENT_NAME" == "push" ]];then
+        USER_EMAIL=$(jq '.commits | .[0] | .author.email' < "$GITHUB_EVENT_PATH")
+    else
+        USER_EMAIL="actions@github.com"
+    fi
 
     # Setup Git credentials if we are planning to change the data in the repo
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
-    ssh-add - <<< "$INPUT_SSH_DEPLOY_KEY"
     git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
-    echo "${GITHUB_REF}"
+    echo "${INPUT_SSH_DEPLOY_KEY}" > _mykey
+    chmod 400 _mykey
+    ssh-add _mykey
 
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
-        echo "In here"
-        git pull fastpages-origin master --ff-only
+        git pull fastpages-origin "${GITHUB_REF}" --ff-only
         git add _posts
         git commit -m "[Bot] Update $INPUT_FORMAT blog posts" --allow-empty
-        git push fastpages-origin HEAD:master
+        git push fastpages-origin HEAD:"$GITHUB_REF"
     fi
 fi
-
-
