@@ -37,8 +37,6 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     chmod 600 /root/.ssh/id_rsa
     chmod 755 /root/.ssh
 
-    ssh -vT git@github.com
-
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
         git pull fastpages-origin "${GITHUB_REF}" --ff-only
