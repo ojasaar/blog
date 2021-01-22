@@ -28,7 +28,7 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
     ssh-add - <<< "$INPUT_SSH_DEPLOY_KEY"
-    git remote add origin "git@github.com:$GITHUB_REPOSITORY.git"
+    git remote set-url origin "git@github.com:$GITHUB_REPOSITORY.git"
 
 
     # Optionally save intermediate markdown
