@@ -28,16 +28,15 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
     git config --global user.name "$GITHUB_ACTOR"
     git config --global user.email "$USER_EMAIL"
     ssh-add - <<< "$INPUT_SSH_DEPLOY_KEY"
-    echo $INPUT_SSH_DEPLOY_KEY
-    git remote add fastpages-origin "git@github.com:$GITHUB_REPOSITORY.git"
+    git remote add origin "git@github.com:$GITHUB_REPOSITORY.git"
 
 
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
-        git pull fastpages-origin "${GITHUB_REF}" --ff-only
+        git pull origin "${GITHUB_REF}" --ff-only
         git add _posts
         git commit -m "[Bot] Update $INPUT_FORMAT blog posts" --allow-empty
-        git push fastpages-origin HEAD:"$GITHUB_REF"
+        git push origin HEAD:"$GITHUB_REF"
     fi
 fi
 
