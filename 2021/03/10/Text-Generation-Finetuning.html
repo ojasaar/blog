@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to solve any text based AI task in a few lines of code with Kiri | Kristo’s blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="How to solve any text based AI task in a few lines of code with Kiri" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Use transfer learning with Kiri to solve tasks with text generation" />
+<meta property="og:description" content="Use transfer learning with Kiri to solve tasks with text generation" />
+<link rel="canonical" href="https://ojasaar.github.io/blog/2021/03/10/Text-Generation-Finetuning.html" />
+<meta property="og:url" content="https://ojasaar.github.io/blog/2021/03/10/Text-Generation-Finetuning.html" />
+<meta property="og:site_name" content="Kristo’s blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-10T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://ojasaar.github.io/blog/2021/03/10/Text-Generation-Finetuning.html","@type":"BlogPosting","headline":"How to solve any text based AI task in a few lines of code with Kiri","dateModified":"2021-03-10T00:00:00-06:00","datePublished":"2021-03-10T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ojasaar.github.io/blog/2021/03/10/Text-Generation-Finetuning.html"},"description":"Use transfer learning with Kiri to solve tasks with text generation","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://ojasaar.github.io/blog/feed.xml" title="Kristo's blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Kristo&#39;s blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to solve any text based AI task in a few lines of code with Kiri</h1><p class="page-description">Use transfer learning with Kiri to solve tasks with text generation</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-10T00:00:00-06:00" itemprop="datePublished">
+        Mar 10, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ojasaar/blog/tree/master/_notebooks/2021-03-10-Text-Generation-Finetuning.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ojasaar/blog/blob/master/_notebooks/2021-03-10-Text-Generation-Finetuning.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-03-10-Text-Generation-Finetuning.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Text-generation-with-Kiri">Text generation with Kiri<a class="anchor-link" href="#Text-generation-with-Kiri"> </a></h2><p>Kiri is built around transfer learning for general models. Text generation with T5, using our <a href="https://github.com/kiri-ai/kiri">open-source library</a>, is an excellent example of this.</p>
+<p>Kiri provides a single model that can do question answering, text summarisation and emotion detection.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">kiri</span>
+<span class="kn">from</span> <span class="nn">kiri.models</span> <span class="kn">import</span> <span class="n">T5QASummaryEmotion</span>
+
+<span class="n">t5</span> <span class="o">=</span> <span class="n">T5QASummaryEmotion</span><span class="p">()</span>
+
+<span class="n">qa</span> <span class="o">=</span> <span class="n">kiri</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">QA</span><span class="p">(</span><span class="n">t5</span><span class="p">)</span>
+<span class="n">emotion</span> <span class="o">=</span> <span class="n">kiri</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">Emotion</span><span class="p">(</span><span class="n">t5</span><span class="p">)</span>
+<span class="n">summarisation</span> <span class="o">=</span> <span class="n">kiri</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">Summarisation</span><span class="p">(</span><span class="n">t5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;In 2002, Musk founded SpaceX, an aerospace manufacturer and space transport services company, of which he is CEO, CTO, and lead designer.&quot;&quot;&quot;</span>
+<span class="n">qa</span><span class="p">(</span><span class="s2">&quot;What is SpaceX?&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;aerospace manufacturer and space transport services company&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">emotion</span><span class="p">(</span><span class="s2">&quot;Holy crap! This is awesome!&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;admiration&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">long_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Artificial intelligence was founded as an academic discipline in 1955, and in the years since has experienced several waves of optimism,[13][14] followed by disappointment and the loss of funding (known as an &quot;AI winter&quot;),[15][16] followed by new approaches, success and renewed funding.[14][17] After AlphaGo successfully defeated a professional Go player in 2015, artificial intelligence once again attracted widespread global attention.[18] For most of its history, AI research has been divided into sub-fields that often fail to communicate with each other.[19] These sub-fields are based on technical considerations, such as particular goals (e.g. &quot;robotics&quot; or &quot;machine learning&quot;),[20] the use of particular tools (&quot;logic&quot; or artificial neural networks), or deep philosophical differences.[23][24][25] Sub-fields have also been based on social factors (particular institutions or the work of particular researchers).[19]</span>
+
+<span class="s2">The traditional problems (or goals) of AI research include reasoning, knowledge representation, planning, learning, natural language processing, perception and the ability to move and manipulate objects.[20] General intelligence is among the field&#39;s long-term goals.[26] Approaches include statistical methods, computational intelligence, and traditional symbolic AI. Many tools are used in AI, including versions of search and mathematical optimization, artificial neural networks, and methods based on statistics, probability and economics. The AI field draws upon computer science, information engineering, mathematics, psychology, linguistics, philosophy, and many other fields.</span>
+
+<span class="s2">The field was founded on the assumption that human intelligence &quot;can be so precisely described that a machine can be made to simulate it&quot;.[27] This raises philosophical arguments about the mind and the ethics of creating artificial beings endowed with human-like intelligence. These issues have been explored by myth, fiction and philosophy since antiquity.[32] Some people also consider AI to be a danger to humanity if it progresses unabated.[33][34] Others believe that AI, unlike previous technological revolutions, will create a risk of mass unemployment.[35]&quot;&quot;&quot;</span>
+
+<span class="n">summarisation</span><span class="p">(</span><span class="n">long_text</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;Artificial intelligence was founded as an academic discipline in 1955. It was founded on the assumption that human intelligence can be &#34;simplified&#34; Some people consider AI to be a danger to humanity if it progresses unabated.&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The fact that a single model can accomplish these diverse tasks is amazing!</p>
+<p>With some lines of code, you too can benefit from transfer learning and solve your niche tasks.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Generating-questions">Generating questions<a class="anchor-link" href="#Generating-questions"> </a></h2><p>Assume that you are making an app that makes it easier for teachers to make reading comprehension tests.</p>
+<p>You need a model that can take some text and produce questions that can be answered based on that text.</p>
+<p>Text generation takes some text as input and produces some text as output. As long as you can frame your problem as a text generation problem then anything is possible.</p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/texttask.png" alt="" />
+    
+    
+</figure>
+</p>
+<p>This is exactly what Kiri's T5 model does to answer questions, detect emotion and summarise text.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Preparing-the-data">Preparing the data<a class="anchor-link" href="#Preparing-the-data"> </a></h3><p>Data is still needed to finetune a model. The good news is that you need <em>a lot</em> less of it. For our proof of concept, we will use less than 1000 examples.</p>
+<p>Our examples are from the SQuAD dataset.</p>
+<p>This dataset has multiple questions and answers on different paragraphs of text. What we'll do is get a paragraph of text as input and list of questions as output. Pretty simple!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;Architecturally, the school has a Catholic character. Atop the Main Building\&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?&#39;,
+ &#39;What is in front of the Notre Dame Main Building?&#39;,
+ &#39;The Basilica of the Sacred heart at Notre Dame is beside to which structure?&#39;,
+ &#39;What is the Grotto at Notre Dame?&#39;,
+ &#39;What sits on top of the Main Building at Notre Dame?&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">input_data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(820, 820)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have taken 820 examples for training. That's just a small portion of the data, but it's enough to achieve some promising results. There is just 1 final step before finetuning.</p>
+<p>The T5 model that we are planning on using has already been finetuned on some tasks such as translation. For multiple tasks, it is useful to add a prefix to the input that can let the model know what it should do.</p>
+<p>The T5 model shown earlier differentiated between emotion detection and summarisation by prepending <code>emotion:</code> and <code>summarise:</code> respectively.</p>
+<p>For our use case, we could use <code>generate questions:</code> as the prefix.</p>
+<p>For example: <code>generate questions: Some paragraph of text</code>.</p>
+<p>Additionally, our <code>output_data</code> is currently a list of strings. Our model expects a single string for an output example.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_data</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;generate questions: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
+<span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">output_data</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;generate questions: Architecturally, the school has a Catholic character. Atop the Main Building\&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?; What is in front of the Notre Dame Main Building?; The Basilica of the Sacred heart at Notre Dame is beside to which structure?; What is the Grotto at Notre Dame?; What sits on top of the Main Building at Notre Dame?&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For output data, we chose <code>;</code> as a separator that's not too common in text. Anything similar should work fine.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Finetuning">Finetuning<a class="anchor-link" href="#Finetuning"> </a></h3><p>We are ready to finetune. All we'll need to do is pass the list of input and output strings to Kiri.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Start a local text generation task with T5</span>
+<span class="n">tg</span> <span class="o">=</span> <span class="n">kiri</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">TextGeneration</span><span class="p">(</span><span class="n">kiri</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">T5</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Length here refers to number of tokens (1 token ~ 1 word)</span>
+<span class="n">tg</span><span class="o">.</span><span class="n">finetune</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">max_input_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">max_output_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;generate questions: Tesla, Inc. (originally Tesla Motors) was incorporated in July 2003 by Martin Eberhard and Marc Tarpenning, who financed the company until the Series A round of funding.[90] Both men played active roles in the company&#39;s early development prior to Musk&#39;s involvement.[91] Musk led the Series A round of investment in 2004, joining Tesla&#39;s board of directors as its chairman.[92][93][94][95] Musk took an active role within the company and oversaw Roadster product design but was not deeply involved in day-to-day business operations.[96] Following a series of escalating conflicts in 2007 and the 2008 financial crisis, Eberhard was ousted from the firm.[97][98] Musk assumed leadership of the company as CEO and product architect in 2008, positions he still holds today. A 2009 lawsuit settlement with Eberhard designated Musk as a Tesla co-founder, along with Tarpenning and two others.[4][5] As of 2019, Musk is the longest tenured CEO of any automotive manufacturer globally.[99]&quot;&quot;&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tg</span><span class="p">(</span><span class="n">input_text</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;In what year was Tesla founded?; In what year was the Series A round of investment underway?; What is the name of the company that is named after Eberhard and who?; Who is the longest tenured CEO of any manufacturer?; What year was&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Not bad!</p>
+<p>We used fewer than 1000 training examples, and less than 1 minute for training. This is the power of transfer learning!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Next-steps">Next steps<a class="anchor-link" href="#Next-steps"> </a></h2><p>If you have any task at all you need to solve, try to frame it as a text generation task.</p>
+<p>Even if you do not have a lot of data, try to follow the steps in this tutorial - you may get some very promising results!</p>
+<p>You can save this model for later with <code>kiri.save(model)</code> and load with <code>model = kiri.load("your-model-name")</code>.</p>
+<p>If you want to use this model in an actual application, you will need to productionise it. Kiri supports deploying your model to an API with <code>kiri.upload(model, api_key="abc")</code></p>
+<p>Share your results with us and check out Kiri's <a href="https://kiri.ai">model platform</a> and <a href="https://github.com/kiri-ai/kiri">library</a> for more!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ojasaar/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/2021/03/10/Text-Generation-Finetuning.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>I&#39;ll be writing about my learnings in whatever I find interesting.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ojasaar" title="ojasaar"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
